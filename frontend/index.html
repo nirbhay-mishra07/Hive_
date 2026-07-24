@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HIVE introduces Bennett University student features for delivery, community posts, campus community, clubs, and Campus Connect.">
+  <title>HIVE - Campus Community for Bennett University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="loader" id="loader" aria-live="polite" aria-label="Loading HIVE">
+    <div class="loader-glow"></div>
+    <div class="loader-ring"></div>
+    <img src="Hive.png" alt="HIVE" class="loader-logo">
+    <div class="loader-line"><span></span></div>
+    <p>Introducing campus features</p>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <nav class="navbar container" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="HIVE home">
+        <img src="Hive.png" alt="" class="brand-logo">
+        <span>HIVE</span>
+      </a>
+      <button class="menu-toggle icon-button" type="button" aria-label="Open navigation" aria-expanded="false"><i data-lucide="menu"></i></button>
+      <div class="nav-panel" id="navPanel">
+        <a href="#showcase">Features</a>
+        <a href="#community">Community</a>
+        <a href="#delivery">Delivery</a>
+        <a href="#connect">Campus Connect</a>
+        <button class="nav-login" type="button" data-auth-open data-auth-view="login">Login</button>
+        <button class="button button-primary nav-cta" type="button" data-auth-open data-auth-view="signup">Get Started</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-band" aria-labelledby="heroTitle">
+      <div class="hero-ambient"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="eyebrow"><i data-lucide="sparkles"></i> Bennett University student super app</div>
+          <h1 id="heroTitle">Campus help, built like an app.</h1>
+          <p class="hero-text">HIVE brings delivery, community posts, campus groups, club updates, and Campus Connect into one clean student-first experience.</p>
+          <div class="hero-actions">
+            <button class="button button-primary ripple" type="button" data-auth-open data-auth-view="signup">Join Now</button>
+            <a class="button button-secondary ripple" href="#community"><i data-lucide="users-round"></i> See Community</a>
+          </div>
+          <div class="trust-row" aria-label="HIVE feature highlights">
+            <span><strong>Campus Community</strong> live student circles</span>
+            <span><strong>Community Posts</strong> useful campus updates</span>
+            <span><strong>Delivery</strong> faster pickups</span>
+          </div>
+        </div>
+        <div class="hero-visual" data-parallax-root>
+          <div class="hero-orbit"></div>
+          <div class="student-illustration app-phone-stage" aria-label="HIVE mobile app preview">
+            <div class="phone-frame phone-main">
+              <div class="phone-status"><span>9:41</span><span></span></div>
+              <div class="phone-brand"><img src="Hive.png" alt=""><strong>HIVE</strong></div>
+              <h3>Hello, Nirbhay</h3>
+              <p>Good to see you again!</p>
+              <button class="phone-cta" type="button">+ New Request</button>
+              <div class="phone-stats"><span><b>3</b>Live</span><span><b>2</b>Coming</span><span><b>1</b>Campus</span></div>
+              <div class="phone-list"><span>Delivery request <b>Active</b></span><span>Community post <b>Live</b></span><span>Campus Connect <b>Soon</b></span></div>
+              <div class="phone-nav"><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="phone-frame phone-side">
+              <div class="phone-status"><span>9:41</span><span></span></div>
+              <h3>Categories</h3>
+              <div class="phone-grid"><span>Delivery</span><span>Posts</span><span>Community</span><span>Clubs</span><span>Connect</span><span>Soon</span></div>
+            </div>
+          </div>
+          <article class="floating-card card-one"><i data-lucide="messages-square"></i><strong>Community post</strong><span>Campus updates</span></article>
+          <article class="floating-card card-two"><i data-lucide="package-check"></i><strong>Gate 2 parcel</strong><span>Pickup coordinated</span></article>
+          <article class="floating-card card-three"><i data-lucide="users-round"></i><strong>Campus Connect</strong><span>Coming soon</span></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="interactive-showcase section-block" id="showcase" aria-labelledby="showcaseTitle">
+      <div class="showcase-particles" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="container showcase-layout">
+        <div class="showcase-copy">
+          <span class="section-kicker">Interactive Showcase</span>
+          <h2 id="showcaseTitle">Campus Community</h2>
+          <p>Explore delivery, community posts, campus community, clubs, and Campus Connect in a focused HIVE experience.</p>
+          <a class="button button-primary ripple" href="#features">Explore Features</a>
+        </div>
+        <div class="showcase-viewport" data-feature-showcase aria-label="Interactive HIVE feature cards">
+          <div class="showcase-track">
+            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/community-all.png" alt="Community posts preview" loading="lazy"></div><i data-lucide="messages-square"></i><h3>Community Posts</h3><p>Share useful updates, questions, and campus conversations in one organized feed.</p></article>
+            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/campus-tea.png" alt="Campus community preview" loading="lazy"></div><i data-lucide="users-round"></i><h3>Campus Community</h3><p>Stay connected with student circles, discussions, and everyday campus activity.</p></article>
+            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/community-all.png" alt="Delivery preview" loading="lazy"></div><i data-lucide="package-check"></i><h3>Delivery</h3><p>Coordinate gate pickups and campus handoffs with clearer status and context.</p></article>
+            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/senior-guidance.png" alt="Campus Connect preview" loading="lazy"></div><i data-lucide="radio-tower"></i><h3>Campus Connect</h3><p>A coming-soon layer for wider campus discovery and coordination.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="feature-section section-block" id="features">
+      <div class="container">
+        <div class="section-heading center">
+          <span class="section-kicker">Feature Introduction</span>
+          <h2>What HIVE is focused on.</h2>
+          <p>A lightweight introduction to the modules currently planned for HIVE. No extra placeholder features.</p>
+        </div>
+        <div class="feature-grid focused-grid">
+          <article class="feature-card"><i data-lucide="package-check"></i><h3>Delivery</h3><p>Coordinate campus pickups and handoffs with cleaner request details.</p></article>
+          <article class="feature-card"><i data-lucide="messages-square"></i><h3>Community Posts</h3><p>Post updates, questions, and useful campus conversations in one feed.</p></article>
+          <article class="feature-card"><i data-lucide="users-round"></i><h3>Campus Community</h3><p>Bring student circles and everyday campus activity into a calmer space.</p></article>
+          <article class="feature-card"><i data-lucide="megaphone"></i><h3>Clubs</h3><p>Future rollout for club updates, announcements, and discovery.</p></article>
+          <article class="feature-card"><i data-lucide="radio-tower"></i><h3>Campus Connect</h3><p>Coming soon for broader campus coordination and student discovery.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="community-section section-block" id="community">
+      <div class="container community-grid">
+        <div class="story-copy community-copy">
+          <span class="section-kicker">Campus Community</span>
+          <h2>A social layer built for useful campus life.</h2>
+          <p>HIVE introduces a calmer way to meet students, discover communities, collaborate on projects, and keep Bennett conversations organized around real campus needs.</p>
+          <div class="community-points" aria-label="Community highlights">
+            <span><i data-lucide="messages-square"></i> Topic-led feeds</span>
+            <span><i data-lucide="shield-check"></i> Campus-first trust</span>
+            <span><i data-lucide="sparkles"></i> Smooth discovery</span>
+          </div>
+        </div>
+        <div class="community-board" aria-label="Campus community preview">
+          <div class="board-glow"></div>
+          <div class="board-tabs"><span>Posts</span><span>Community</span><span>Clubs</span></div>
+          <article class="board-post"><i data-lucide="messages-square"></i><strong>Community update</strong><small>Useful campus conversations in one feed</small></article>
+          <article class="board-post"><i data-lucide="users-round"></i><strong>Campus circle</strong><small>Students, clubs, and shared context</small></article>
+          <article class="board-post"><i data-lucide="megaphone"></i><strong>Club announcement</strong><small>Future rollout for organized updates</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="spotlight-section section-block" id="delivery">
+      <div class="container spotlight-grid">
+        <div class="spotlight-visual" aria-hidden="true">
+          <div class="route-line"></div>
+          <article class="mini-card mini-one"><i data-lucide="package"></i><strong>Gate pickup</strong><span>Parcels and essentials</span></article>
+          <article class="mini-card mini-two"><i data-lucide="map-pin"></i><strong>Campus drop</strong><span>Hostel, block, library</span></article>
+          <div class="delivery-core"><i data-lucide="bike"></i></div>
+        </div>
+        <div class="story-copy">
+          <span class="section-kicker">Delivery</span>
+          <h2>Designed for the small campus tasks that waste the most time.</h2>
+          <p>Students can understand at a glance how HIVE will support gate pickups, nearby help, rewards, ETA, and clear handoff details without turning it into a complicated workflow.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="connect-section section-block" id="connect">
+      <div class="container connect-grid">
+        <div class="connect-visual" aria-label="Campus Connect animation">
+          <div class="connect-orbit orbit-one"></div>
+          <div class="connect-orbit orbit-two"></div>
+          <div class="connect-core"><img src="Hive.png" alt=""><span>HIVE</span></div>
+          <div class="connect-node node-hostel"><i data-lucide="building-2"></i><span>Hostels</span></div>
+          <div class="connect-node node-clubs"><i data-lucide="megaphone"></i><span>Clubs</span></div>
+          <div class="connect-node node-events"><i data-lucide="calendar-days"></i><span>Updates</span></div>
+          <div class="connect-node node-campus"><i data-lucide="users-round"></i><span>Campus</span></div>
+        </div>
+        <div class="story-copy connect-copy">
+          <span class="section-kicker">Campus Connect</span>
+          <h2>A coming-soon layer for campus-wide coordination.</h2>
+          <p>Campus Connect will bring clubs, campus updates, and student discovery into one connected layer while keeping HIVE lightweight today.</p>
+          <div class="connect-status"><span>Coming Soon</span><i></i></div>
+        </div>
+      </div>
+    </section>
+    <section class="soon-section section-block" id="soon">
+      <div class="container">
+        <div class="section-heading center">
+          <span class="section-kicker">Feature Roadmap</span>
+          <h2>Coming next for HIVE.</h2>
+          <p>Only the owner-approved future surfaces are shown here, keeping the landing page lightweight.</p>
+        </div>
+        <div class="roadmap-grid compact-roadmap">
+          <article><i data-lucide="megaphone"></i><h3>Clubs</h3><p>Future rollout for club announcements and discovery.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="auth-modal" id="authModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <div class="auth-backdrop" data-auth-close></div>
+    <section class="auth-panel" role="document">
+      <button class="auth-close icon-button" type="button" data-auth-close aria-label="Close authentication"><i data-lucide="x"></i></button>
+      <div class="auth-panel-grid">
+        <div class="auth-card glass-card">
+          <div class="auth-heading">
+            <span class="section-kicker">Bennett University</span>
+            <h2 id="authModalTitle">Welcome to HIVE.</h2>
+            <p>Sign in or create your account to enter the student community.</p>
+          </div>
+          <div class="auth-tabs" role="tablist" aria-label="Authentication options">
+            <button class="auth-tab active" type="button" role="tab" aria-selected="true" data-auth-tab="login">Login</button>
+            <button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="signup">Signup</button>
+          </div>
+          <div class="auth-views">
+            <form class="auth-form active" data-auth-form="login" novalidate>
+              <div class="field-group"><label for="loginEmail">Email</label><div class="input-shell"><i data-lucide="mail"></i><input id="loginEmail" name="email" type="email" autocomplete="email" placeholder="you@bennett.edu.in" required></div></div>
+              <div class="field-group"><label for="loginPassword">Password</label><div class="input-shell"><i data-lucide="lock-keyhole"></i><input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required><button class="password-toggle" type="button" aria-label="Show password"><i data-lucide="eye"></i></button></div></div>
+              <div class="form-row"><label class="check-row"><input name="remember" type="checkbox"> Remember me</label><button class="text-button" type="button" data-auth-trigger="forgot">Forgot Password</button></div>
+              <button class="button button-primary auth-submit" type="submit"><span>Login</span><i data-lucide="arrow-right"></i></button>
+              <p class="form-status" aria-live="polite"></p>
+            </form>
+            <form class="auth-form" data-auth-form="signup" novalidate>
+              <div class="field-group"><label for="signupName">Full Name</label><div class="input-shell"><i data-lucide="user-round"></i><input id="signupName" name="username" autocomplete="name" placeholder="Full name" required></div></div>
+              <div class="field-group"><label for="signupEmail">Bennett University Email</label><div class="input-shell"><i data-lucide="mail"></i><input id="signupEmail" name="email" type="email" autocomplete="email" placeholder="you@bennett.edu.in" required></div></div>
+              <div class="field-grid"><div class="field-group"><label for="signupPhone">Phone Number</label><div class="input-shell"><i data-lucide="phone"></i><input id="signupPhone" name="phone" inputmode="tel" autocomplete="tel" placeholder="10 digit number" required></div></div><div class="field-group"><label for="signupGender">Gender</label><div class="input-shell"><i data-lucide="users-round"></i><select id="signupGender" name="gender" required><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div></div></div>
+              <div class="field-group"><label for="signupPassword">Password</label><div class="input-shell"><i data-lucide="lock-keyhole"></i><input id="signupPassword" name="password" type="password" autocomplete="new-password" placeholder="Create password" required><button class="password-toggle" type="button" aria-label="Show password"><i data-lucide="eye"></i></button></div></div>
+              <button class="button button-primary auth-submit" type="submit"><span>Create Account</span><i data-lucide="sparkles"></i></button>
+              <p class="form-status" aria-live="polite"></p>
+            </form>
+            <form class="auth-form otp-form" data-auth-form="otp" novalidate>
+              <button class="ghost-back" type="button" data-auth-trigger="signup"><i data-lucide="arrow-left"></i> Back</button>
+              <div class="otp-intro"><span class="section-kicker">Verification</span><h2>Enter OTP</h2><p>We sent a 6 digit code to <strong data-otp-email>your Bennett email</strong>.</p></div>
+              <div class="otp-boxes" aria-label="One time password"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 1"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 2"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 3"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 4"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 5"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 6"></div>
+              <div class="otp-meta"><span data-countdown>Resend in 60s</span><button class="text-button" type="button" data-resend disabled>Resend OTP</button></div>
+              <button class="button button-primary auth-submit" type="submit"><span>Verify OTP</span><i data-lucide="badge-check"></i></button>
+              <p class="form-status" aria-live="polite"></p>
+            </form>
+            <form class="auth-form" data-auth-form="forgot" novalidate>
+              <button class="ghost-back" type="button" data-auth-trigger="login"><i data-lucide="arrow-left"></i> Back to login</button>
+              <div class="otp-intro"><span class="section-kicker">Password Recovery</span><h2>Reset password</h2><p data-forgot-copy>Enter your Bennett email to receive an OTP.</p></div>
+              <div class="forgot-step active" data-forgot-step="email"><div class="field-group"><label for="forgotEmail">Email</label><div class="input-shell"><i data-lucide="mail"></i><input id="forgotEmail" name="email" type="email" autocomplete="email" placeholder="you@bennett.edu.in" required></div></div></div>
+              <div class="forgot-step" data-forgot-step="reset"><div class="otp-boxes compact" aria-label="Password reset OTP"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"></div><div class="field-group"><label for="newPassword">New Password</label><div class="input-shell"><i data-lucide="lock-keyhole"></i><input id="newPassword" name="password" type="password" autocomplete="new-password" placeholder="New password" required><button class="password-toggle" type="button" aria-label="Show password"><i data-lucide="eye"></i></button></div></div><div class="field-group"><label for="confirmPassword">Confirm Password</label><div class="input-shell"><i data-lucide="lock-keyhole"></i><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Confirm password" required><button class="password-toggle" type="button" aria-label="Show password"><i data-lucide="eye"></i></button></div></div></div>
+              <button class="button button-primary auth-submit" type="submit"><span data-forgot-button>Send OTP</span><i data-lucide="send"></i></button>
+              <p class="form-status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+        <aside class="auth-visual glass-card" aria-label="HIVE community illustration">
+          <div class="visual-glow"></div>
+          <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zrqthn6o.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          <div class="visual-card card-a"><i data-lucide="message-circle"></i><span>Campus Tea</span></div>
+          <div class="visual-card card-b"><i data-lucide="package-check"></i><span>Delivery</span></div>
+          <div class="visual-card card-c"><i data-lucide="radio-tower"></i><span>Connect Soon</span></div>
+        </aside>
+      </div>
+    </section>
+  </div>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <a class="brand" href="#top"><img src="Hive.png" alt="" class="brand-logo"><span>HIVE</span></a>
+      <div class="footer-links"><a href="#showcase">Features</a><a href="#community">Community</a><a href="#delivery">Delivery</a><a href="#connect">Campus Connect</a></div>
+      <p>Copyright 2026 HIVE. Built for Bennett University students.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
