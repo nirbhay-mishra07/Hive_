@@ -4,43 +4,11 @@
 
 // Set to true while backend endpoints aren't wired up yet.
 // Switch to false once OrdersAPI calls actually work.
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
-let currentUser = { name: "Nirbhay", phone: "+91 90000 00000", gender: "Male" };
 let feedData = [];
 let currentLocation = null;
 
-// ---------- Mock data (remove once backend integrated) ----------
-function getMockFeed() {
-  return [
-    {
-      id: "1",
-      platform: "Swiggy",
-      title: "Pick up my Swiggy order from gate",
-      pickupLocation: "Main Gate",
-      dropLocation: "Hostel H4, Room 212",
-      reward: 30,
-      estimatedTime: "20 mins",
-      postedTime: "5 mins ago",
-      preferredGender: "",
-      status: "POSTED",
-      postedBy: { name: "Aman", phone: "+91 98765 43210", gender: "Male" },
-    },
-    {
-      id: "2",
-      platform: "Blinkit",
-      title: "Groceries drop needed",
-      pickupLocation: "Blinkit Store, Sector 128",
-      dropLocation: "Hostel G2",
-      reward: 25,
-      estimatedTime: "15 mins",
-      postedTime: "12 mins ago",
-      preferredGender: "Female",
-      status: "POSTED",
-      postedBy: { name: "Riya", phone: "+91 91234 56780", gender: "Female" },
-    },
-  ];
-}
 
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
@@ -79,28 +47,53 @@ function toggleModal(id, show) {
 
 // ---------- Stats ----------
 async function loadStats() {
-  try {
-    const stats = USE_MOCK_DATA
-      ? { requestsPosted: 4, deliveriesCompleted: 9, totalEarnings: 210, activeRequests: 1 }
-      : await OrdersAPI.getStats();
 
-    document.getElementById("statPosted").textContent = stats.requestsPosted;
-    document.getElementById("statCompleted").textContent = stats.deliveriesCompleted;
-    document.getElementById("statEarnings").textContent = `₹${stats.totalEarnings}`;
-    document.getElementById("statActive").textContent = stats.activeRequests;
-  } catch (err) {
-    console.error("Stats load failed:", err);
-  }
+    try {
+
+        const stats = await OrdersAPI.getStats();
+
+        document.getElementById("statPosted").textContent =
+            stats.totalRequests;
+
+        document.getElementById("statCompleted").textContent =
+            stats.delivered;
+
+        document.getElementById("statEarnings").textContent =
+            "₹" + stats.earnings;
+
+        document.getElementById("statActive").textContent =
+            stats.active;
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast("Couldn't load stats");
+
+    }
+
 }
 
-// ---------- Feed ----------
 async function loadFeed() {
-  try {
-    feedData = USE_MOCK_DATA ? getMockFeed() : await OrdersAPI.getFeed();
-    renderFeed();
-  } catch (err) {
-    showToast(err.message || "Failed to load feed");
-  }
+
+    try {
+
+        feedData = await OrdersAPI.getFeed();
+
+        renderFeed();
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast("Couldn't load feed");
+
+    }
+
 }
 
 function renderFeed() {
@@ -274,22 +267,16 @@ async function handleNewRequestSubmit(e) {
   };
 
   try {
-    if (USE_MOCK_DATA) {
-      feedData.unshift({
-        id: String(Date.now()),
-        ...payload,
-        postedTime: "just now",
-        status: "POSTED",
-        postedBy: currentUser,
-      });
-    } else {
-      await OrdersAPI.createRequest(payload);
-      await loadFeed();
-    }
-    renderFeed();
+    await OrdersAPI.createRequest(payload);
+
+    await loadFeed();
+
     loadStats();
+
     form.reset();
+
     toggleModal("newRequestOverlay", false);
+
     showToast("Delivery request posted!");
   } catch (err) {
     showToast(err.message || "Failed to post request");
