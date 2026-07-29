@@ -10,7 +10,7 @@ const CONFIG = {
 };
 
 function getToken() {
-  return localStorage.getItem("hive_token");
+    return localStorage.getItem("hive_token");
 }
 
 async function apiRequest(endpoint, { method = "GET", body = null, auth = true } = {}) {
@@ -36,76 +36,120 @@ async function apiRequest(endpoint, { method = "GET", body = null, auth = true }
   return data;
 }
 
-function normalizeOrder(order) {
-  const created = order.createdAt ? new Date(order.createdAt) : null;
-  return {
-    id: order.id,
-    platform: "Campus",
-    title: order.title || "Delivery request",
-    pickupLocation: order.location || "Campus gate",
-    dropLocation: order.dropLocation || "Campus",
-    reward: order.reward || 0,
-    estimatedTime: order.estimatedTime || "N/A",
-    postedTime: created && !Number.isNaN(created.getTime()) ? created.toLocaleString() : "recently",
-    preferredGender: order.preferredGender || "",
-    status: order.status === "DELIVERED" ? "COMPLETED" : (order.status || "POSTED"),
-    postedBy: {
-      name: order.postedByName || order.postedBy || "Student",
-      phone: order.postedByPhone || "Not shared",
-      gender: order.postedByGender || "Not shared",
-    },
-  };
+function normalizeOrder(order) {  
+
+    return {
+
+        id: order.id,
+
+        platform: "Helpify",
+
+        title: order.title,
+
+        pickupLocation: order.location,
+
+        dropLocation: "Student Hostel",
+
+        reward: order.reward,
+
+        estimatedTime: "15-20 mins",
+
+        postedTime: new Date(order.createdAt).toLocaleString(),
+
+        preferredGender: order.preferredGender,
+
+        status: order.status,
+
+        postedBy: {
+
+            name: order.postedByName,
+
+            phone: order.postedByPhone,
+
+            gender: order.postedByGender
+
+        }
+
+    };
+
 }
 
 function toBackendOrder(payload) {
-  return {
-    title: payload.title,
-    location: payload.pickupLocation,
-    reward: payload.reward,
-    status: "POSTED",
-    lat: payload.latitude || 0,
-    lng: payload.longitude || 0,
-    preferredGender: payload.preferredGender || "Any",
-  };
+
+    return {
+
+        title: payload.title,
+
+        location: payload.pickupLocation,
+
+        reward: payload.reward,
+
+        preferredGender: payload.preferredGender,
+
+        status: "POSTED",
+
+        lat: payload.latitude || 0,
+
+        lng: payload.longitude || 0
+
+    };
+
 }
 // ---------- Orders / Delivery API ----------
 
 const OrdersAPI = {
-  // GET nearby / feed requests
-  getFeed(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    return apiRequest(`/orders/feed${query ? `?${query}` : ""}`);
-  },
 
-  // GET dashboard stats
-  getStats() {
-    return apiRequest(`/orders/stats`);
-  },
+    // Load all orders
+    async getFeed() {
 
-  // POST create new delivery request
-  createRequest(payload) {
-    return apiRequest(`/orders/create`, { method: "POST", body: payload });
-  },
+        const orders = await apiRequest("/orders");
 
-  // POST accept a request
-  acceptRequest(orderId) {
-    return apiRequest(`/orders/${orderId}/accept`, { method: "PUT" });
-  },
+        return orders.map(normalizeOrder);
+    },
 
-  // POST cancel an accepted request
-  cancelRequest(orderId) {
-    return apiRequest(`/orders/${orderId}/cancel`, { method: "PUT" });
-  },
+    // Dashboard stats
+    getStats() {
+        return apiRequest("/orders/stats");
+    },
 
-  // POST mark delivery complete
-  completeRequest(orderId) {
-    return apiRequest(`/orders/${orderId}/complete`, { method: "PUT" });
-  },
+    // Create order
+    createRequest(payload) {
 
-  // GET order details (contact info shown only after acceptance)
-  getOrderDetails(orderId) {
-    return apiRequest(`/orders/${orderId}`);
-  },
+        return apiRequest("/orders", {
+            method: "POST",
+            body: toBackendOrder(payload)
+        });
+
+    },
+
+    // Accept
+    acceptRequest(id) {
+        return apiRequest(`/orders/${id}/accept`, {
+            method: "PUT"
+        });
+    },
+
+    // Cancel
+    cancelRequest(id) {
+        return apiRequest(`/orders/${id}/cancel`, {
+            method: "PUT"
+        });
+    },
+
+    // Complete
+    completeRequest(id) {
+        return apiRequest(`/orders/${id}/complete`, {
+            method: "PUT"
+        });
+    },
+
+    // Until backend endpoint exists
+    getOrderDetails(id) {
+
+        return apiRequest("/orders");
+
+    }
+
 };
 
 const ProfileAPI = {
