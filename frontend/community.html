@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hive - Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="delivery.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="logo"><img src="Hive.png" alt="" style="width:22px;height:22px;vertical-align:-4px;margin-right:6px;">Hive</div>
+    <nav class="nav-icons">
+      <button class="icon-btn" id="notifBtn" title="Notifications">
+        <i data-lucide="bell"></i><span class="badge" id="notifBadge" hidden>0</span>
+      </button>
+      <button class="icon-btn" title="Delivery" onclick="window.location.href='delivery.html'"><i data-lucide="truck"></i></button>
+      <button class="icon-btn" id="profileBtn" title="Profile"><i data-lucide="user-round"></i></button>
+    </nav>
+  </header>
+
+  <main class="container community-page">
+    <section class="feed-header">
+      <div>
+        <h2>Community</h2>
+        <p class="community-subtext">Ask questions, share updates, and talk with Bennett students.</p>
+      </div>
+      <button class="btn-primary" id="openCreatePostBtn">+ Create Post</button>
+    </section>
+
+    <section class="filters glass community-tabs">
+      <input type="text" id="postSearchInput" placeholder="Search posts...">
+      <button class="btn-secondary active" type="button" data-filter="all">All</button>
+      <button class="btn-secondary" type="button" data-filter="campusTea">Campus Tea</button>
+      <button class="btn-secondary" type="button" data-filter="seniorGuidance">Senior Guidance</button>
+      <button class="btn-secondary" type="button" data-filter="randomQuestion">Random Question</button>
+      <button class="btn-secondary" type="button" data-filter="my">My Posts</button>
+    </section>
+
+    <div class="feed-grid community-feed" id="postsFeed"></div>
+    <p class="empty-state" id="postsEmptyState" hidden>No posts here yet.</p>
+  </main>
+
+  <div class="modal-overlay" id="createPostOverlay" hidden>
+    <div class="modal glass">
+      <div class="modal-header">
+        <h3>Create Post</h3>
+        <button class="close-btn" data-close="createPostOverlay"><i data-lucide="x"></i></button>
+      </div>
+      <form id="createPostForm" class="modal-body">
+        <label>Type
+          <select name="type" required>
+            <option value="campusTea">Campus Tea</option>
+            <option value="seniorGuidance">Senior Guidance</option>
+            <option value="randomQuestion">Random Question</option>
+          </select>
+        </label>
+        <label>Post
+          <textarea name="content" id="postContentInput" maxlength="1000" rows="5" required></textarea>
+        </label>
+        <div class="char-counter" id="postCharCounter">0/1000</div>
+        <label class="checkbox-row"><input type="checkbox" name="anonymous"> Post anonymously</label>
+        <button type="submit" class="btn-primary full-width">Publish Post</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="commentsOverlay" hidden>
+    <div class="modal glass">
+      <div class="modal-header">
+        <h3>Comments</h3>
+        <button class="close-btn" data-close="commentsOverlay"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="comments-list" id="commentsList"></div>
+        <textarea id="commentInput" rows="3" placeholder="Write a comment..."></textarea>
+        <button class="btn-primary full-width" id="postCommentBtn">Post Comment</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="api.js"></script>
+  <script src="community.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

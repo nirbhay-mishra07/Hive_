@@ -232,14 +232,26 @@ function authEndpoint(path) {
   return `${AUTH_API_BASE_URL}${path}`;
 }
 
-async function authPost(path, payload) {
+async function authPost(path, payload, { asParams = false, auth = false } = {}) {
+  const headers = asParams
+    ? { "Content-Type": "application/x-www-form-urlencoded" }
+    : { "Content-Type": "application/json" };
+  if (auth) {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (token) headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(authEndpoint(path), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+    headers,
+    body: asParams ? new URLSearchParams(payload).toString() : JSON.stringify(payload)
   });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.message || data.error || "Request failed. Please try again.");
+  const text = await response.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+  if (!response.ok) {
+    throw new Error((data && (data.message || data.error)) || (typeof data === "string" && data) || "Request failed. Please try again.");
+  }
   return data;
 }
 
@@ -447,7 +459,7 @@ function initAuthModal() {
     if (otp.length !== 6) return setAuthStatus(form, "Enter the 6 digit OTP.", "error");
     try {
       setAuthLoading(form, true);
-      await authPost("/api/auth/verify", { email: authState.pendingEmail, otp });
+      await authPost("/api/auth/verify", { email: authState.pendingEmail, otp }, { asParams: true });
       setAuthStatus(form, "Verified. Switching to login...");
       setTimeout(() => switchAuthView("login"), 700);
     } catch (error) {
@@ -500,7 +512,7 @@ function initAuthModal() {
       if (!validateAuthEmail(email)) throw new Error("Please enter a valid email address.");
       setAuthLoading(form, true);
       if (authState.forgotStep === "email") {
-        await authPost("/api/auth/forgot-password", { email });
+        await authPost("/api/auth/forgot-password", { email }, { asParams: true });
         setForgotStep("reset");
         setAuthStatus(form, "OTP sent. Enter it with your new password.");
         return;
@@ -511,7 +523,7 @@ function initAuthModal() {
       if (otp.length !== 6) throw new Error("Enter the 6 digit OTP.");
       if (!password || password.length < 6) throw new Error("Password must be at least 6 characters.");
       if (password !== confirmPassword) throw new Error("Passwords do not match.");
-      await authPost("/api/auth/reset-password", { email, otp, password, confirmPassword });
+      await authPost("/api/auth/reset-password", { email, otp, newPassword: password }, { asParams: true });
       setAuthStatus(form, "Password reset. Switching to login...");
       setTimeout(() => { setForgotStep("email"); switchAuthView("login"); }, 800);
     } catch (error) {
@@ -521,6 +533,3 @@ function initAuthModal() {
     }
   });
 }
-
-
-

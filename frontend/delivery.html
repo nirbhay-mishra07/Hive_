@@ -18,6 +18,7 @@
       <button class="icon-btn" id="notifBtn" title="Notifications">
         <i data-lucide="bell"></i><span class="badge" id="notifBadge" hidden>0</span>
       </button>
+      <button class="icon-btn" title="Community" onclick="window.location.href='community.html'"><i data-lucide="message-square"></i></button>
       <button class="icon-btn" id="profileBtn" title="Profile"><i data-lucide="user-round"></i></button>
     </nav>
   </header>
@@ -47,7 +48,7 @@
     <!-- Feed header -->
     <section class="feed-header">
       <h2>Delivery Feed</h2>
-      <button class="btn-primary" id="openNewRequestBtn">+ New Request</button>
+      <button class="btn-primary" id="openNewRequestBtn">+ Post for Delivery</button>
     </section>
 
     <!-- Filters -->
@@ -86,7 +87,7 @@
   <div class="modal-overlay" id="newRequestOverlay" hidden>
     <div class="modal glass">
       <div class="modal-header">
-        <h3>New Delivery Request</h3>
+        <h3>Post for Delivery</h3>
         <button class="close-btn" data-close="newRequestOverlay"><i data-lucide="x"></i></button>
       </div>
       <form id="newRequestForm" class="modal-body">
@@ -126,7 +127,7 @@
           <textarea name="instructions" rows="2" placeholder="Optional notes..."></textarea>
         </label>
         <div class="location-status" id="locationStatus"><i data-lucide="map-pin"></i> Fetching your location...</div>
-        <button type="submit" class="btn-primary full-width">Post Request</button>
+        <button type="submit" class="btn-primary full-width">Post for Delivery</button>
       </form>
     </div>
   </div>
@@ -141,6 +142,16 @@
       <div class="modal-body" id="orderDetailsBody">
         <!-- injected by JS -->
       </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="profileOverlay" hidden>
+    <div class="modal glass">
+      <div class="modal-header">
+        <h3>My Profile</h3>
+        <button class="close-btn" data-close="profileOverlay"><i data-lucide="x"></i></button>
+      </div>
+      <div id="profileBody"></div>
     </div>
   </div>
 

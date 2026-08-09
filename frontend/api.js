@@ -4,9 +4,9 @@
 // deploy ho ya localhost pe test karna ho.
 // ==========================================================
 
+const API_BASE_ROOT = window.HIVE_API_BASE_URL || window.__HIVE_API_BASE_URL__ || "http://localhost:8080";
 const CONFIG = {
-  // TODO: apne backend ka actual base URL yahan daal do
-  BASE_URL: window.HIVE_API_BASE_URL || "http://localhost:8080/api",
+  BASE_URL: API_BASE_ROOT.replace(/\/api\/?$/, "") + "/api",
 };
 
 function getToken() {
@@ -26,134 +26,133 @@ async function apiRequest(endpoint, { method = "GET", body = null, auth = true }
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  const text = await res.text();
   let data = null;
-  try { data = await res.json(); } catch (_) { /* empty response */ }
+  try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
 
   if (!res.ok) {
-    const message = (data && (data.message || data.error)) || `Request failed (${res.status})`;
+    const message = (data && (data.message || data.error)) || (typeof data === "string" && data) || `Request failed (${res.status})`;
     throw new Error(message);
   }
   return data;
 }
 
-function normalizeOrder(order) {  
+function normalizeOrder(order) {
+  const created = order.createdAt ? new Date(order.createdAt) : null;
+  return {
+    id: order.id,
+    platform: order.platform || "Campus",
+    title: order.title || "Delivery request",
+    pickupLocation: order.location || "Not provided",
+    dropLocation: order.dropLocation || "Not provided",
+    reward: order.reward || 0,
+    estimatedTime: order.estimatedTime || "N/A",
+    instructions: order.instructions || "",
+    postedTime: created && !Number.isNaN(created.getTime()) ? created.toLocaleString() : "recently",
+    preferredGender: order.preferredGender || "",
+    status: order.status === "DELIVERED" ? "COMPLETED" : (order.status || "POSTED"),
+    postedBy: {
+      name: order.postedByName || order.postedBy || "Not shared",
+      phone: order.postedByPhone || "Not shared",
+      gender: order.postedByGender || "Not shared",
+    },
+    acceptedBy: {
+      name: order.acceptedByName || order.acceptedBy || "Not accepted yet",
+      phone: order.acceptedByPhone || "Not shared",
+      gender: order.acceptedByGender || "Not shared",
+    },
+  };
+}
 
-    return {
-
-        id: order.id,
-
-        platform: "Helpify",
-
-        title: order.title,
-
-        pickupLocation: order.location,
-
-        dropLocation: "Student Hostel",
-
-        reward: order.reward,
-
-        estimatedTime: "15-20 mins",
-
-        postedTime: new Date(order.createdAt).toLocaleString(),
-
-        preferredGender: order.preferredGender,
-
-        status: order.status,
-
-        postedBy: {
-
-            name: order.postedByName,
-
-            phone: order.postedByPhone,
-
-            gender: order.postedByGender
-
-        }
-
-    };
-
+function normalizeStats(stats = {}) {
+  return {
+    requestsPosted: stats.totalRequests ?? stats.requestsPosted ?? 0,
+    deliveriesCompleted: stats.delivered ?? stats.deliveriesCompleted ?? 0,
+    totalEarnings: stats.earnings ?? stats.totalEarnings ?? 0,
+    activeRequests: stats.active ?? stats.activeRequests ?? 0,
+  };
 }
 
 function toBackendOrder(payload) {
-
-    return {
-
-        title: payload.title,
-
-        location: payload.pickupLocation,
-
-        reward: payload.reward,
-
-        preferredGender: payload.preferredGender,
-
-        status: "POSTED",
-
-        lat: payload.latitude || 0,
-
-        lng: payload.longitude || 0
-
-    };
-
+  return {
+    title: String(payload.title || "").trim(),
+    location: String(payload.pickupLocation || "").trim(),
+    dropLocation: payload.dropLocation,
+    reward: Number(payload.reward) || 0,
+    estimatedTime: payload.estimatedTime || "",
+    status: "POSTED",
+    lat: payload.latitude || 0,
+    lng: payload.longitude || 0,
+    preferredGender: payload.preferredGender || "Any",
+    platform: payload.platform || "Other",
+    instructions: payload.instructions || "",
+  };
 }
+
 // ---------- Orders / Delivery API ----------
 
 const OrdersAPI = {
+  async getFeed(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const orders = await apiRequest(`/orders${query ? `?${query}` : ""}`);
+    return (orders || []).map(normalizeOrder);
+  },
 
-    // Load all orders
-    async getFeed() {
+  async getNearby() {
+    const orders = await apiRequest(`/orders/nearby`);
+    return (orders || []).map(normalizeOrder);
+  },
 
-        const orders = await apiRequest("/orders");
+  async getStats() {
+    const stats = await apiRequest(`/orders/stats`);
+    return normalizeStats(stats);
+  },
 
-        return orders.map(normalizeOrder);
-    },
+  async createRequest(payload) {
+    const created = await apiRequest(`/orders`, { method: "POST", body: toBackendOrder(payload) });
+    return normalizeOrder(created);
+  },
 
-    // Dashboard stats
-    getStats() {
-        return apiRequest("/orders/stats");
-    },
+  async acceptRequest(orderId) {
+    const updated = await apiRequest(`/orders/${orderId}/accept`, { method: "PUT" });
+    return normalizeOrder(updated);
+  },
 
-    // Create order
-    createRequest(payload) {
+  async cancelRequest(orderId) {
+    const updated = await apiRequest(`/orders/${orderId}/cancel`, { method: "PUT" });
+    return normalizeOrder(updated);
+  },
 
-        return apiRequest("/orders", {
-            method: "POST",
-            body: toBackendOrder(payload)
-        });
+  async completeRequest(orderId) {
+    const updated = await apiRequest(`/orders/${orderId}/complete`, { method: "PUT" });
+    return normalizeOrder(updated);
+  },
 
-    },
-
-    // Accept
-    acceptRequest(id) {
-        return apiRequest(`/orders/${id}/accept`, {
-            method: "PUT"
-        });
-    },
-
-    // Cancel
-    cancelRequest(id) {
-        return apiRequest(`/orders/${id}/cancel`, {
-            method: "PUT"
-        });
-    },
-
-    // Complete
-    completeRequest(id) {
-        return apiRequest(`/orders/${id}/complete`, {
-            method: "PUT"
-        });
-    },
-
-    // Until backend endpoint exists
-    getOrderDetails(id) {
-
-        return apiRequest("/orders");
-
-    }
-
+  async getOrderDetails(id) {
+    const orders = await apiRequest(`/orders`);
+    return (orders || []).find(order => String(order.id) === String(id)) || null;
+  },
 };
 
 const ProfileAPI = {
   getProfile() {
-    return apiRequest(`/user/profile`);
+    return apiRequest(`/auth/me`);
   },
+};
+
+const LocationAPI = {
+  updateLocation(lat, lng) {
+    return apiRequest(`/auth/location`, { method: "PUT", body: { lat, lng } });
+  },
+};
+
+const PostsAPI = {
+  getAll() { return apiRequest("/posts"); },
+  getMyPosts() { return apiRequest("/posts/me"); },
+  getByType(type) { return apiRequest(`/posts/type/${type}`); },
+  create(post) { return apiRequest("/posts", { method: "POST", body: post }); },
+  toggleLike(id) { return apiRequest(`/posts/${id}/like`, { method: "PUT" }); },
+  addComment(id, comment) { return apiRequest(`/posts/${id}/comment`, { method: "POST", body: { comment } }); },
+  delete(id) { return apiRequest(`/posts/${id}`, { method: "DELETE" }); },
+  view(id) { return apiRequest(`/posts/${id}/view`, { method: "PUT" }); },
 };

@@ -44,7 +44,7 @@
         <div class="hero-copy">
           <div class="eyebrow"><i data-lucide="sparkles"></i> Bennett University student super app</div>
           <h1 id="heroTitle">Campus help, built like an app.</h1>
-          <p class="hero-text">HIVE brings delivery, community posts, campus groups, club updates, and Campus Connect into one clean student-first experience.</p>
+          <p class="hero-text">HIVE brings delivery requests, community posts, campus groups, club updates, and Campus Connect into one place.</p>
           <div class="hero-actions">
             <button class="button button-primary ripple" type="button" data-auth-open data-auth-view="signup">Join Now</button>
             <a class="button button-secondary ripple" href="#community"><i data-lucide="users-round"></i> See Community</a>
@@ -63,7 +63,7 @@
               <div class="phone-brand"><img src="Hive.png" alt=""><strong>HIVE</strong></div>
               <h3>Hello, Nirbhay</h3>
               <p>Good to see you again!</p>
-              <button class="phone-cta" type="button">+ New Request</button>
+              <button class="phone-cta" type="button" onclick="window.location.href='delivery.html?openNewRequest=true'">+ Post for Delivery</button>
               <div class="phone-stats"><span><b>3</b>Live</span><span><b>2</b>Coming</span><span><b>1</b>Campus</span></div>
               <div class="phone-list"><span>Delivery request <b>Active</b></span><span>Community post <b>Live</b></span><span>Campus Connect <b>Soon</b></span></div>
               <div class="phone-nav"><i></i><i></i><i></i><i></i></div>
@@ -88,14 +88,14 @@
         <div class="showcase-copy">
           <span class="section-kicker">Interactive Showcase</span>
           <h2 id="showcaseTitle">Campus Community</h2>
-          <p>Explore delivery, community posts, campus community, clubs, and Campus Connect in a focused HIVE experience.</p>
+          <p>See delivery, community posts, campus community, clubs, and Campus Connect in HIVE.</p>
           <a class="button button-primary ripple" href="#features">Explore Features</a>
         </div>
         <div class="showcase-viewport" data-feature-showcase aria-label="Interactive HIVE feature cards">
           <div class="showcase-track">
             <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/community-all.png" alt="Community posts preview" loading="lazy"></div><i data-lucide="messages-square"></i><h3>Community Posts</h3><p>Share useful updates, questions, and campus conversations in one organized feed.</p></article>
             <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/campus-tea.png" alt="Campus community preview" loading="lazy"></div><i data-lucide="users-round"></i><h3>Campus Community</h3><p>Stay connected with student circles, discussions, and everyday campus activity.</p></article>
-            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/community-all.png" alt="Delivery preview" loading="lazy"></div><i data-lucide="package-check"></i><h3>Delivery</h3><p>Coordinate gate pickups and campus handoffs with clearer status and context.</p></article>
+            <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/community-all.png" alt="Delivery preview" loading="lazy"></div><i data-lucide="package-check"></i><h3>Delivery</h3><p>Post gate pickups, hostel drops, rewards, and handoff details.</p></article>
             <article class="showcase-card"><div class="showcase-illustration"><img src="assets/images/senior-guidance.png" alt="Campus Connect preview" loading="lazy"></div><i data-lucide="radio-tower"></i><h3>Campus Connect</h3><p>A coming-soon layer for wider campus discovery and coordination.</p></article>
           </div>
         </div>
@@ -105,11 +105,11 @@
       <div class="container">
         <div class="section-heading center">
           <span class="section-kicker">Feature Introduction</span>
-          <h2>What HIVE is focused on.</h2>
+          <h2>What HIVE includes.</h2>
           <p>A lightweight introduction to the modules currently planned for HIVE. No extra placeholder features.</p>
         </div>
         <div class="feature-grid focused-grid">
-          <article class="feature-card"><i data-lucide="package-check"></i><h3>Delivery</h3><p>Coordinate campus pickups and handoffs with cleaner request details.</p></article>
+          <article class="feature-card"><i data-lucide="package-check"></i><h3>Delivery</h3><p>Post campus pickups and handoffs with request details.</p></article>
           <article class="feature-card"><i data-lucide="messages-square"></i><h3>Community Posts</h3><p>Post updates, questions, and useful campus conversations in one feed.</p></article>
           <article class="feature-card"><i data-lucide="users-round"></i><h3>Campus Community</h3><p>Bring student circles and everyday campus activity into a calmer space.</p></article>
           <article class="feature-card"><i data-lucide="megaphone"></i><h3>Clubs</h3><p>Future rollout for club updates, announcements, and discovery.</p></article>
@@ -119,7 +119,7 @@
     </section>
 
     <section class="community-section section-block" id="community">
-      <div class="container community-grid">
+      <div class="container community-layout">
         <div class="story-copy community-copy">
           <span class="section-kicker">Campus Community</span>
           <h2>A social layer built for useful campus life.</h2>
@@ -130,12 +130,69 @@
             <span><i data-lucide="sparkles"></i> Smooth discovery</span>
           </div>
         </div>
-        <div class="community-board" aria-label="Campus community preview">
-          <div class="board-glow"></div>
-          <div class="board-tabs"><span>Posts</span><span>Community</span><span>Clubs</span></div>
-          <article class="board-post"><i data-lucide="messages-square"></i><strong>Community update</strong><small>Useful campus conversations in one feed</small></article>
-          <article class="board-post"><i data-lucide="users-round"></i><strong>Campus circle</strong><small>Students, clubs, and shared context</small></article>
-          <article class="board-post"><i data-lucide="megaphone"></i><strong>Club announcement</strong><small>Future rollout for organized updates</small></article>
+
+        <div class="community-app-shell" aria-label="Campus community preview">
+          <aside class="campus-sidebar campus-sidebar--embedded" aria-label="Campus navigation">
+            <a class="sidebar-logo" href="#top" aria-label="HIVE home">
+              <img src="Hive.png" alt="">
+            </a>
+            <nav class="sidebar-nav">
+              <a class="sidebar-link active" href="#community"><i data-lucide="coffee"></i><span>All</span></a>
+              <a class="sidebar-link" href="#community"><i data-lucide="clock-3"></i><span>Latest</span></a>
+              <a class="sidebar-link" href="#community"><i data-lucide="trending-up"></i><span>Trending</span></a>
+              <a class="sidebar-link" href="#community"><i data-lucide="bookmark"></i><span>Saved</span></a>
+              <a class="sidebar-link" href="#showcase"><i data-lucide="shopping-bag"></i><span>Marketplace</span></a>
+              <a class="sidebar-link" href="#showcase"><i data-lucide="graduation-cap"></i><span>Tutoring</span></a>
+              <a class="sidebar-link" href="#community"><i data-lucide="accessibility"></i><span>Senior Guidance</span></a>
+              <a class="sidebar-link" href="#community"><i data-lucide="calendar-days"></i><span>Clubs & Events</span></a>
+              <a class="sidebar-link highlighted" href="#community"><i data-lucide="cup-soda"></i><span>Campus Tea</span></a>
+              <button class="sidebar-link sidebar-more" type="button"><i data-lucide="ellipsis"></i><span>More</span><i data-lucide="chevron-down"></i></button>
+            </nav>
+            <a class="sidebar-profile" href="#" aria-label="Open profile">
+              <span class="profile-avatar">AR</span>
+              <span class="profile-copy"><strong>Arnav Raj</strong><small>B.Tech CSE '27</small></span>
+              <i data-lucide="chevron-right"></i>
+            </a>
+          </aside>
+
+          <div class="community-feed-panel">
+            <div class="community-feed-topbar">
+              <div class="feed-pills" aria-label="Feed filters">
+                <button class="feed-pill active" type="button">All</button>
+                <button class="feed-pill" type="button">Latest</button>
+                <button class="feed-pill" type="button">Trending</button>
+                <button class="feed-pill feed-pill--accent" type="button">Campus Tea</button>
+                <button class="feed-pill" type="button">Saved</button>
+              </div>
+              <div class="feed-actions">
+                <button class="feed-icon-btn" type="button" aria-label="Notifications"><i data-lucide="bell"></i><span class="feed-badge">3</span></button>
+                <button class="feed-icon-btn" type="button" aria-label="Messages"><i data-lucide="messages-square"></i></button>
+              </div>
+            </div>
+
+            <div class="community-feed-list">
+              <article class="community-post-card">
+                <header class="community-post-head">
+                  <span class="community-post-avatar">A</span>
+                  <div><strong>Arnav Raj</strong><small>1h ago</small></div>
+                  <span class="community-post-tag">Campus Tea</span>
+                </header>
+                <h3>Spill the tea: What's the real attendance scene?</h3>
+                <p>Heard mixed things about the new policy. Anyone actually know what happens after 75%? 👀</p>
+                <footer class="community-post-meta"><span><i data-lucide="heart"></i> 24</span><span><i data-lucide="message-circle"></i> 8</span></footer>
+              </article>
+              <article class="community-post-card">
+                <header class="community-post-head">
+                  <span class="community-post-avatar">R</span>
+                  <div><strong>Riya Sharma</strong><small>2h ago</small></div>
+                  <span class="community-post-tag">Campus Tea</span>
+                </header>
+                <h3>Best late-night food spots near campus?</h3>
+                <p>Need recommendations that actually deliver to H4 after 11pm 🍕</p>
+                <footer class="community-post-meta"><span><i data-lucide="heart"></i> 41</span><span><i data-lucide="message-circle"></i> 15</span></footer>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>
