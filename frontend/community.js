@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const user = await ProfileAPI.getProfile();
     currentUserEmail = user.email || "";
+    populateSidebarProfile(user);
   } catch (err) {
     handleApiError(err, "Failed to load profile");
     return;
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function bindEvents() {
   document.getElementById("openCreatePostBtn")?.addEventListener("click", () => toggleModal("createPostOverlay", true));
   document.getElementById("profileBtn")?.addEventListener("click", () => window.location.href = "delivery.html");
+  document.getElementById("sidebarProfile")?.addEventListener("click", () => window.location.href = "delivery.html");
   document.querySelectorAll("[data-close]").forEach(btn => {
     btn.addEventListener("click", () => toggleModal(btn.dataset.close, false));
   });
@@ -39,6 +41,14 @@ function bindEvents() {
   document.getElementById("postSearchInput")?.addEventListener("input", renderLoadedPosts);
   document.getElementById("postContentInput")?.addEventListener("input", updateCharCounter);
   document.getElementById("postCommentBtn")?.addEventListener("click", handleCommentSubmit);
+}
+
+function populateSidebarProfile(user) {
+  const name = user.username || user.name || user.email || "Student";
+  const sidebarName = document.getElementById("sidebarName");
+  const sidebarAvatar = document.getElementById("sidebarAvatar");
+  if (sidebarName) sidebarName.textContent = name;
+  if (sidebarAvatar) sidebarAvatar.textContent = name.trim().charAt(0).toUpperCase() || "?";
 }
 
 function toggleModal(id, show) {
@@ -79,12 +89,16 @@ function escapeHtml(value) {
 }
 
 async function renderFeed(filter) {
-  currentFilter = filter;
-  document.querySelectorAll("[data-filter]").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === filter));
+  const unsupportedFilters = ["latest", "trending", "saved"];
+  const effectiveFilter = unsupportedFilters.includes(filter) ? "all" : filter;
+  if (unsupportedFilters.includes(filter)) showToast("Coming soon");
+
+  currentFilter = effectiveFilter;
+  document.querySelectorAll("[data-filter]").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === effectiveFilter));
   try {
-    if (filter === "my") loadedPosts = await PostsAPI.getMyPosts();
-    else if (filter === "all") loadedPosts = await PostsAPI.getAll();
-    else loadedPosts = await PostsAPI.getByType(filter);
+    if (effectiveFilter === "me" || effectiveFilter === "my") loadedPosts = await PostsAPI.getMyPosts();
+    else if (effectiveFilter === "all") loadedPosts = await PostsAPI.getAll();
+    else loadedPosts = await PostsAPI.getByType(effectiveFilter);
     renderLoadedPosts();
   } catch (err) {
     handleApiError(err, "Failed to load posts");

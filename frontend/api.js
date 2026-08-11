@@ -52,15 +52,19 @@ function normalizeOrder(order) {
     preferredGender: order.preferredGender || "",
     status: order.status === "DELIVERED" ? "COMPLETED" : (order.status || "POSTED"),
     postedBy: {
+      id: order.postedBy || null,
       name: order.postedByName || order.postedBy || "Not shared",
       phone: order.postedByPhone || "Not shared",
       gender: order.postedByGender || "Not shared",
     },
     acceptedBy: {
+      id: order.acceptedBy || null,
       name: order.acceptedByName || order.acceptedBy || "Not accepted yet",
       phone: order.acceptedByPhone || "Not shared",
       gender: order.acceptedByGender || "Not shared",
     },
+    postedById: order.postedBy || null,
+    acceptedById: order.acceptedBy || null,
   };
 }
 

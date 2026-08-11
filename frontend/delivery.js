@@ -9,18 +9,27 @@ const USE_MOCK_DATA = false;
 let feedData = [];
 let currentLocation = null;
 let isLoadingFeed = false;
+let currentUserId = null;
+let currentDeliveryFilter = "all";
 
 
 // ---------- Init ----------
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   if (!getToken()) {
     showToast("Please login to access Delivery.");
     setTimeout(() => { window.location.href = "index.html"; }, 900);
     return;
   }
+  try {
+    const profile = await ProfileAPI.getProfile();
+    currentUserId = profile && (profile.id || profile._id || profile.userId) ? (profile.id || profile._id || profile.userId) : null;
+    populateSidebarProfile(profile);
+  } catch (e) {
+    // ignore — we'll default to hiding accepted orders for anonymous viewers
+    currentUserId = null;
+  }
 
-  loadStats();
-  loadFeed();
+  await Promise.all([loadStats(), loadFeed()]);
   requestLocation();
   bindEvents();
 
@@ -33,6 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function bindEvents() {
   document.getElementById("openNewRequestBtn")?.addEventListener("click", () => toggleModal("newRequestOverlay", true));
   document.getElementById("profileBtn")?.addEventListener("click", openProfile);
+  document.getElementById("sidebarProfile")?.addEventListener("click", openProfile);
+  document.querySelectorAll("[data-delivery-filter]").forEach(btn => {
+    btn.addEventListener("click", () => setDeliveryFilter(btn.dataset.deliveryFilter));
+  });
   document.querySelectorAll("[data-close]").forEach(btn => {
     btn.addEventListener("click", () => toggleModal(btn.dataset.close, false));
   });
@@ -47,6 +60,25 @@ function bindEvents() {
   document.getElementById("platformFilter")?.addEventListener("change", renderFeed);
   document.getElementById("sortFilter")?.addEventListener("change", loadFeed);
   document.getElementById("genderFilter")?.addEventListener("change", renderFeed);
+}
+
+function populateSidebarProfile(user) {
+  const name = user.username || user.name || user.email || "Student";
+  const sidebarName = document.getElementById("sidebarName");
+  const sidebarAvatar = document.getElementById("sidebarAvatar");
+  if (sidebarName) sidebarName.textContent = name;
+  if (sidebarAvatar) sidebarAvatar.textContent = name.trim().charAt(0).toUpperCase() || "?";
+}
+
+function setDeliveryFilter(filter) {
+  currentDeliveryFilter = filter || "all";
+  document.querySelectorAll("[data-delivery-filter]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.deliveryFilter === currentDeliveryFilter);
+  });
+
+  const sortFilter = document.getElementById("sortFilter");
+  if (sortFilter) sortFilter.value = currentDeliveryFilter === "nearby" ? "nearby" : "latest";
+  loadFeed();
 }
 
 function toggleModal(id, show) {
@@ -138,7 +170,21 @@ function renderFeed() {
   const sort = document.getElementById("sortFilter")?.value || "latest";
   const gender = document.getElementById("genderFilter")?.value || "";
 
-  let list = feedData.filter(o => o.status !== "COMPLETED");
+  let list = feedData.filter(o => o.status !== "DELIVERED");
+
+  // Hide orders that are already accepted from other users.
+  // Show ACCEPTED orders only if current user is the poster or the accepter.
+  if (currentUserId) {
+    list = list.filter(o => {
+      if (o.status !== "ACCEPTED") return true;
+      const postedId = o.postedById || (o.postedBy && o.postedBy.id) || null;
+      const acceptedId = o.acceptedById || (o.acceptedBy && o.acceptedBy.id) || null;
+      return String(postedId) === String(currentUserId) || String(acceptedId) === String(currentUserId);
+    });
+  } else {
+    // If we don't know current user, be conservative and hide accepted orders
+    list = list.filter(o => o.status !== "ACCEPTED");
+  }
 
   if (search) {
     list = list.filter(o =>
@@ -149,6 +195,11 @@ function renderFeed() {
   }
   if (platform) list = list.filter(o => o.platform === platform);
   if (gender) list = list.filter(o => !o.preferredGender || o.preferredGender === "Any" || o.preferredGender === gender);
+  if (currentDeliveryFilter === "active") {
+    list = list.filter(o => o.status === "ACCEPTED" && isUserRelatedOrder(o));
+  } else if (currentDeliveryFilter === "mine") {
+    list = list.filter(o => isUserPostedOrder(o));
+  }
 
   if (sort === "reward") list = [...list].sort((a, b) => Number(b.reward || 0) - Number(a.reward || 0));
 
@@ -166,6 +217,22 @@ function renderFeed() {
 
   list.forEach(order => grid.appendChild(buildCard(order)));
   if (window.lucide) lucide.createIcons();
+}
+
+function isUserPostedOrder(order) {
+  if (!currentUserId) return false;
+  const postedId = order.postedById || (order.postedBy && (order.postedBy.id || order.postedBy._id || order.postedBy.userId)) || null;
+  return String(postedId) === String(currentUserId);
+}
+
+function isUserAcceptedOrder(order) {
+  if (!currentUserId) return false;
+  const acceptedId = order.acceptedById || (order.acceptedBy && (order.acceptedBy.id || order.acceptedBy._id || order.acceptedBy.userId)) || null;
+  return String(acceptedId) === String(currentUserId);
+}
+
+function isUserRelatedOrder(order) {
+  return isUserPostedOrder(order) || isUserAcceptedOrder(order);
 }
 
 function buildCard(order) {

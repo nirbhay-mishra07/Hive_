@@ -11,39 +11,72 @@
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <header class="topbar">
-    <div class="logo"><img src="Hive.png" alt="" style="width:22px;height:22px;vertical-align:-4px;margin-right:6px;">Hive</div>
-    <nav class="nav-icons">
-      <button class="icon-btn" id="notifBtn" title="Notifications">
-        <i data-lucide="bell"></i><span class="badge" id="notifBadge" hidden>0</span>
-      </button>
-      <button class="icon-btn" title="Delivery" onclick="window.location.href='delivery.html'"><i data-lucide="truck"></i></button>
-      <button class="icon-btn" id="profileBtn" title="Profile"><i data-lucide="user-round"></i></button>
-    </nav>
-  </header>
-
-  <main class="container community-page">
-    <section class="feed-header">
-      <div>
-        <h2>Community</h2>
-        <p class="community-subtext">Ask questions, share updates, and talk with Bennett students.</p>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo"><img src="Hive.png" alt="" width="26" height="26">Hive</div>
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-filter="all"><i data-lucide="layout-grid"></i> All</button>
+        <button class="sidebar-link" data-filter="latest"><i data-lucide="clock"></i> Latest</button>
+        <button class="sidebar-link" data-filter="trending"><i data-lucide="trending-up"></i> Trending</button>
+        <button class="sidebar-link" data-filter="saved"><i data-lucide="bookmark"></i> Saved</button>
+        <button class="sidebar-link" data-filter="seniorGuidance"><i data-lucide="users"></i> Senior Guidance</button>
+        <button class="sidebar-link" data-filter="campusTea"><i data-lucide="coffee"></i> Campus Tea</button>
+        <button class="sidebar-link" data-filter="randomQuestion"><i data-lucide="help-circle"></i> Random Question</button>
+        <button class="sidebar-link" data-filter="me"><i data-lucide="user"></i> My Posts</button>
+      </nav>
+      <div class="sidebar-footer" id="sidebarProfile">
+        <div class="avatar-fallback" id="sidebarAvatar">?</div>
+        <div>
+          <div class="footer-name" id="sidebarName">Loading...</div>
+          <div class="footer-meta">View profile</div>
+        </div>
       </div>
-      <button class="btn-primary" id="openCreatePostBtn">+ Create Post</button>
-    </section>
+    </aside>
 
-    <section class="filters glass community-tabs">
-      <input type="text" id="postSearchInput" placeholder="Search posts...">
-      <button class="btn-secondary active" type="button" data-filter="all">All</button>
-      <button class="btn-secondary" type="button" data-filter="campusTea">Campus Tea</button>
-      <button class="btn-secondary" type="button" data-filter="seniorGuidance">Senior Guidance</button>
-      <button class="btn-secondary" type="button" data-filter="randomQuestion">Random Question</button>
-      <button class="btn-secondary" type="button" data-filter="my">My Posts</button>
-    </section>
+    <div class="shell-main">
+      <main class="shell-center community-page">
+        <div class="pill-tabs">
+          <button class="pill-tab active" data-filter="all">All</button>
+          <button class="pill-tab" data-filter="latest">Latest</button>
+          <button class="pill-tab" data-filter="trending">Trending</button>
+          <button class="pill-tab" data-filter="campusTea">Campus Tea</button>
+          <button class="pill-tab" data-filter="saved">Saved</button>
+          <div class="shell-icon-actions">
+            <button class="icon-btn" id="notifBtn" title="Notifications">
+              <i data-lucide="bell"></i><span class="badge" id="notifBadge" hidden>0</span>
+            </button>
+            <button class="icon-btn" title="Delivery" onclick="window.location.href='delivery.html'"><i data-lucide="truck"></i></button>
+            <button class="icon-btn" id="profileBtn" title="Profile"><i data-lucide="user-round"></i></button>
+          </div>
+        </div>
 
-    <div class="feed-grid community-feed" id="postsFeed"></div>
-    <p class="empty-state" id="postsEmptyState" hidden>No posts here yet.</p>
-  </main>
+        <section class="feed-header">
+          <div>
+            <h2>Community</h2>
+            <p class="community-subtext">Ask questions, share updates, and talk with Bennett students.</p>
+          </div>
+          <button class="btn-primary" id="openCreatePostBtn">+ Create Post</button>
+        </section>
+
+        <section class="filters glass community-tabs">
+          <input type="text" id="postSearchInput" placeholder="Search posts...">
+        </section>
+
+        <div class="feed-grid community-feed" id="postsFeed"></div>
+        <p class="empty-state" id="postsEmptyState" hidden>No posts here yet.</p>
+      </main>
+
+      <aside class="shell-side-panel">
+        <span class="mascot bee">🐝</span>
+        <span class="mascot book">📚</span>
+        <span class="mascot grad">🎓</span>
+        <span class="mascot coffee">☕</span>
+        <span class="mascot bulb">💡</span>
+        <span class="mascot laptop">💻</span>
+        <h3>Spill<br>The Tea</h3>
+      </aside>
+    </div>
+  </div>
 
   <div class="modal-overlay" id="createPostOverlay" hidden>
     <div class="modal glass">
